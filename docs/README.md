@@ -15,6 +15,7 @@
 - [Perplexity代替戦略](./perplexity-replacement-strategy.md) - PerplexityをCursor/Copilotで完全代替
 - [MCPトラブルシューティング](./mcp-troubleshooting.md) - MCP設定エラーの診断と修正
 - [Copilot Agent ワークフロー](./COPILOT_AGENT_WORKFLOW.md) - GitHub Copilot Agentレビュー依頼の効率的な方法（**重要: CLI経由では自動起動しません**）
+- [Copilot Agent レビュー依頼実践ガイド](./HOW_TO_REQUEST_COPILOT_REVIEW.md) - **実際に使用しているPR経由のレビュー依頼方法**（推奨）
 
 ---
 
