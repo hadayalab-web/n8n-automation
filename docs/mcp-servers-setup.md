@@ -236,10 +236,141 @@
         "LOG_LEVEL": "error",
         "NODE_NO_WARNINGS": "1"
       }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"],
+      "env": {
+        "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
+        "LOG_LEVEL": "error",
+        "NODE_NO_WARNINGS": "1"
+      }
+    },
+    "stackoverflow": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
+      "env": {
+        "LOG_LEVEL": "error",
+        "NODE_NO_WARNINGS": "1"
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
+        "LOG_LEVEL": "error",
+        "NODE_NO_WARNINGS": "1"
+      }
     }
   }
 }
 ```
+
+---
+
+### 6. Context7 MCP Server（技術ドキュメント）
+
+**必須理由**: Perplexity代替 - 最新技術ドキュメントへの常時アクセス
+
+**機能:**
+- 最新のコードドキュメントへの常時アクセス
+- リアルタイム技術情報取得
+- フレームワーク更新の自動追跡
+
+**設定方法:**
+
+1. **Context7 API Key取得**
+   ```bash
+   # Context7 Dashboard → API Keys → Create Key
+   ```
+
+2. **MCP設定追加**
+   ```json
+   {
+     "context7": {
+       "command": "npx",
+       "args": ["-y", "@context7/mcp-server"],
+       "env": {
+         "CONTEXT7_API_KEY": "<YOUR_CONTEXT7_KEY>",
+         "LOG_LEVEL": "error",
+         "NODE_NO_WARNINGS": "1"
+       }
+     }
+   }
+   ```
+
+**n8nとの連携:**
+- 技術ドキュメントをn8nワークフローで参照
+- 最新情報を自動取得してワークフロー更新
+
+---
+
+### 7. Stack Overflow MCP Server（問題解決）
+
+**必須理由**: Perplexity代替 - エラー解決とベストプラクティス参照
+
+**機能:**
+- エラーメッセージの即座検索
+- コミュニティソリューション取得
+- ベストプラクティス参照
+
+**設定方法:**
+
+**MCP設定追加（API Key不要）**
+```json
+{
+  "stackoverflow": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-stackoverflow"],
+    "env": {
+      "LOG_LEVEL": "error",
+      "NODE_NO_WARNINGS": "1"
+    }
+  }
+}
+```
+
+**n8nとの連携:**
+- エラー解決策をn8nワークフローで自動取得
+- ベストプラクティスをワークフローに反映
+
+---
+
+### 8. Brave Search MCP Server（Web検索）
+
+**必須理由**: Perplexity代替 - リアルタイムWeb検索
+
+**機能:**
+- リアルタイムWeb検索
+- 最新技術情報取得
+- ドキュメント検索
+
+**設定方法:**
+
+1. **Brave Search API Key取得**
+   ```bash
+   # Brave Search API → Get API Key
+   ```
+
+2. **MCP設定追加**
+   ```json
+   {
+     "brave-search": {
+       "command": "npx",
+       "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+       "env": {
+         "BRAVE_API_KEY": "<YOUR_BRAVE_KEY>",
+         "LOG_LEVEL": "error",
+         "NODE_NO_WARNINGS": "1"
+       }
+     }
+   }
+   ```
+
+**n8nとの連携:**
+- Web検索結果をn8nワークフローで活用
+- 最新情報を自動取得して処理
 
 ---
 
@@ -253,6 +384,9 @@
 - **Vercel**: Access Token
 - **Google Workspace**: Client ID, Client Secret, Refresh Token
 - **PostgreSQL**: Connection String
+- **Context7**: API Key（Perplexity代替）
+- **Brave Search**: API Key（Perplexity代替）
+- **Stack Overflow**: API Key不要
 
 ### 2. mcp.jsonの更新
 
@@ -276,6 +410,9 @@
 @vercel プロジェクト一覧を表示して
 @google-workspace 利用可能なツールを表示して
 @postgres データベース一覧を表示して
+@context7 最新のNext.jsドキュメントを検索して
+@stackoverflow エラーメッセージを検索して
+@brave-search 最新技術情報を検索して
 ```
 
 ---
@@ -335,10 +472,14 @@ Automated Actions
 - [Vercel MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-vercel)
 - [Google Workspace MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-google-workspace)
 - [PostgreSQL MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-postgres)
+- [Context7 MCP Server](https://www.npmjs.com/package/@context7/mcp-server)
+- [Stack Overflow MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-stackoverflow)
+- [Brave Search MCP Server](https://www.npmjs.com/package/@modelcontextprotocol/server-brave-search)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
+- [Perplexity代替戦略](./perplexity-replacement-strategy.md)
 
 ---
 
-**最終更新**: 2025-12-23  
+**最終更新**: 2025-12-23
 **バージョン**: 1.0.0
 
