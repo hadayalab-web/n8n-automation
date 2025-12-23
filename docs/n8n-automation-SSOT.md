@@ -11,6 +11,18 @@
 
 ## 2. SSOT原則
 
+### ドキュメント優先順位
+
+本書（n8n-automation-SSOT.md）がプロジェクト全体の最高位ドキュメントです。
+
+矛盾がある場合の優先順位：
+
+1. **本書（n8n-automation-SSOT.md）** - プロジェクト全体方針
+2. **n8n-cloud-sync.md** - 同期フロー詳細手順
+3. **workflow-conventions.md** - 命名規約・コーディング規約
+
+### GitHubがSSOT
+
 - **GitHubが唯一の信頼できる情報源（Single Source of Truth）**
 - すべての変更はGitHubを起点とする
 - n8n Cloud UIは動作確認・モニタリング用途のみ
@@ -38,7 +50,8 @@
 
 ### 標準フロー（GitHub → n8n Cloud）
 
-詳細は [n8n Cloud同期運用](./n8n-cloud-sync.md#標準フローgithubcloud) を参照
+詳細は [n8n Cloud同期運用](./n8n-cloud-sync.md) を参照
+※「標準フロー（GitHub→Cloud）」セクションを参照
 
 1. Cursorでワークフロー編集
 2. ローカル検証
@@ -52,7 +65,8 @@
 
 ### 例外フロー（Cloud → GitHub取り込み）
 
-詳細は [n8n Cloud同期運用](./n8n-cloud-sync.md#例外フローcloudgithub取り込み) を参照
+詳細は [n8n Cloud同期運用](./n8n-cloud-sync.md) を参照
+※「例外フロー（Cloud→GitHub取り込み）」セクションを参照
 
 緊急時にCloud UIで編集した場合の手順:
 
@@ -182,6 +196,17 @@
 2. Credentials設定確認
 3. Webhook URL確認
 
+#### Activate状態の確認
+
+- **症状**: ワークフローが実行されない
+- **原因**: Import後にInactiveになっている
+- **対処**: n8n Cloud UIでワークフローを開き、Activateボタンをクリック
+
+#### Webhook URLの環境依存
+
+- **注意**: Cloud固有のWebhook URLは再生成される
+- **対応**: Import後にWebhook URLを確認・更新
+
 ## 10. 今後の運用
 
 ### 迷ったときは
@@ -189,6 +214,28 @@
 1. **このSSOTドキュメントを最初に参照**
 2. 関連ドキュメントを確認
 3. GitHub Copilot先生にレビュー依頼
+
+### 最短判断ツリー
+
+#### Cloud UIで編集してしまった？
+
+- **Yes** → 例外フロー実施（Export→整形→コミット）
+- **No** → 標準フロー継続
+
+#### GitHub Actions が red？
+
+- **Fix first（修正が最優先）**
+- **redのままCloudへ反映禁止**
+
+#### Credentials関連？
+
+- JSONには含まれない（環境依存）
+- `.env` と Cloud UI で個別設定
+
+#### 例外フローを常態化させない
+
+- 緊急時のみ許可（P1障害、期限対応など）
+- **原則は標準フロー**
 
 ### ドキュメント更新
 
@@ -198,7 +245,7 @@
 
 ---
 
-**最終更新**: 2025-12-23  
-**バージョン**: 1.0.0  
+**最終更新**: 2025-12-23
+**バージョン**: 1.0.0
 **メンテナー**: HadayaLab
 
