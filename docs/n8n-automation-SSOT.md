@@ -33,7 +33,88 @@
 - n8n Cloudは実行環境であり、ソース管理ではない
 - 変更の追跡・レビュー・ロールバックはすべてGitHubで実施
 
-## 3. 開発環境
+## 3. n8n-mcp の活用（543個ノード × 2,700+テンプレート）
+
+### n8n-mcp とは
+
+n8n-mcp（Model Context Protocol）は、n8nが提供する強力なツールであり、
+本プロジェクトの自動化基盤の核となるコンポーネントです。
+
+**mcp.json 設定によって実装済み** となっており、以下の能力を持ちます：
+
+### 利用可能なリソース
+
+#### 📊 543個の n8n ノード
+- HTTP Request、Code、データ処理ノード
+- Slack、Gmail、Google Drive、Salesforce、Stripe、HubSpot、Jira、GitHub 等
+- PostgreSQL、MySQL、MongoDB、Snowflake、BigQuery
+- OpenAI、Claude、Gemini、LangChain 等
+
+#### 📚 2,700+ ワークフロー テンプレート
+- CRM自動化、マーケティング自動化、営業支援
+- HR・採用、財務・会計、カスタマーサポート
+- データ分析、開発者向けツール
+
+#### 🔧 42個の主要ツール
+- list_node_templates: ノード検索
+- search_templates: テンプレート検索
+- validate_workflow: ワークフロー検証
+- create_workflow: ワークフロー作成
+- execute_workflow: オンデマンド実行
+
+### 本プロジェクトでの活用
+
+#### 標準フロー（GitHub → Cloud）での役割
+
+```
+GitHub に .json push
+↓
+GitHub Actions トリガー
+↓
+npm run format（Prettier 整形）
+↓
+n8n-mcp: validate_workflow（543個ノード検証）
+↓
+n8n Cloud 自動反映
+↓
+Slack 通知
+```
+
+#### 拡張機会
+
+1. **ワークフロー テンプレート ライブラリ化**
+   - workflows/templates/ 配下に 2,700+テンプレートから選別した
+     ベストプラクティスを集約
+   - 命名規約に従いカスタマイズして管理
+
+2. **AI Agent 統合**
+   - Claude Desktop → n8n-mcp → ワークフロー自動生成
+   - 「このデータを処理して」→ ワークフロー自動実装
+   - docs/n8n-cloud-sync.md の標準フロー自動実行
+
+3. **ノード検索スクリプト自動化**
+   - n8n-mcp の 543個ノードから最適な組み合わせを推奨
+   - 2,700+テンプレートから参考実装を抽出
+   - GitHub CLI 連携で自動提案
+
+### 重要な注意事項
+
+- mcp.json は ~/.cursor/mcp.json に配置（環境依存）
+- N8N_API_URL と N8N_API_KEY は環境変数で管理（JSON 非含有）
+- 同期検証は GitHub Actions 経由で自動実行（手動実行不要）
+- 543個ノードのうち利用するものは docs/workflow-conventions.md で指定
+
+### 次フェーズの検討事項
+
+現在の実装で十分な運用は可能ですが、以下の拡張を検討可能：
+
+- ワークフロー テンプレート ライブラリの体系化（優先度：中）
+- Claude との完全統合（優先度：中）
+- ワークフロー自動生成ツール（優先度：低）
+
+詳細は本プロジェクトのマイルストーンを参照してください。
+
+## 4. 開発環境
 
 ### 実装担当
 - **Cursor**: ワークフロー作成・編集の実装ツール
@@ -46,7 +127,7 @@
   - 設定: `~/.cursor/mcp.json`
   - 参考: `.env.example`
 
-## 4. ワークフロー管理運用
+## 5. ワークフロー管理運用
 
 ### 標準フロー（GitHub → n8n Cloud）
 
@@ -85,7 +166,7 @@
 - カテゴリ: `webhook`, `schedule`, `manual`, `email`
 - タグ運用: `test`, `production`, `mcp`, `draft`
 
-## 5. 品質保証
+## 6. 品質保証
 
 ### GitHub Actions
 
@@ -106,7 +187,7 @@
 3. **GitHub Actions**: 自動検証
 4. **マージ**: レビュー通過後マージ
 
-## 6. 重要な運用原則
+## 7. 重要な運用原則
 
 ### 同時編集禁止
 
@@ -137,7 +218,7 @@
 - 差分が荒れるのは仕様
 - Prettierで整形されるが、重要な変更のみに注目
 
-## 7. ドキュメント構造
+## 8. ドキュメント構造
 
 ### 主要ドキュメント
 
@@ -156,7 +237,7 @@
 | n8n-cloud-sync.md | 同期運用の詳細手順 |
 | workflow-conventions.md | 命名規約と構造ルール |
 
-## 8. 参照リンク
+## 9. 参照リンク
 
 ### 内部ドキュメント
 
@@ -174,7 +255,7 @@
 
 - [汎用開発環境SSOT](../Cursor-Pro-GitHub-Copilot-Pro-最強開発環境-SSOT-v3.1.md)（参照先が存在する場合）
 
-## 9. トラブルシューティング
+## 10. トラブルシューティング
 
 ### よくある問題
 
@@ -207,7 +288,7 @@
 - **注意**: Cloud固有のWebhook URLは再生成される
 - **対応**: Import後にWebhook URLを確認・更新
 
-## 10. 今後の運用
+## 11. 今後の運用
 
 ### 迷ったときは
 
