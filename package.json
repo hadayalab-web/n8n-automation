@@ -1,0 +1,31 @@
+{
+  "name": "n8n-automation",
+  "version": "1.0.0",
+  "description": "n8nワークフロー自動化プロジェクト - HadayaLab Space連携",
+  "main": "index.js",
+  "scripts": {
+    "start": "n8n start",
+    "dev": "n8n start --tunnel"
+  },
+  "keywords": [
+    "n8n",
+    "automation",
+    "workflow",
+    "mcp"
+  ],
+  "author": "HadayaLab",
+  "license": "MIT",
+  "dependencies": {
+    "n8n": "^1.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hadayalab-web/n8n-automation.git"
+  }
+}
+
