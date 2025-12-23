@@ -8,6 +8,8 @@
 - **[n8n-automation SSOT](./n8n-automation-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
 - [n8n Cloud同期運用](./n8n-cloud-sync.md) - 運用フロー・セットアップ
 - [ワークフロー命名規約](./workflow-conventions.md) - 命名ルール・タグ運用
+- [MCPサーバー設定](./mcp-servers-setup.md) - MCPサーバー導入ガイド（n8n, Vercel, Google Workspace, PostgreSQL）
+- [MCPトラブルシューティング](./mcp-troubleshooting.md) - MCP設定エラーの診断と修正
 
 ## 🎯 プロジェクト方針
 
