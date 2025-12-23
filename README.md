@@ -12,6 +12,13 @@ n8n Cloud ワークフロー自動化プロジェクト（SSOT）
 - **検証**: GitHub Actions（自動）
 - **同期**: 手動Import（Phase 1） / 自動デプロイ（Phase 2計画中）
 
+## 運用方針
+
+このリポジトリはGitHubをSSOTとして運用します。
+- **標準**: GitHub → n8n Cloud（一方向）
+- **例外**: Cloud UI編集時は取り込み手順を実施
+- **詳細**: [docs/n8n-cloud-sync.md](./docs/n8n-cloud-sync.md) 参照
+
 ## 📚 ドキュメント
 
 - [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)

@@ -11,21 +11,43 @@
 - **開発ツール**: Cursor + n8n-mcp
 - **バージョン管理**: GitHub
 
-## 運用フロー
+## 運用方針
 
-### Phase 1: 手動同期（現在）
+- **パターン1（GitHub→Cloud一方向）を採用**
+- **GitHubが唯一の信頼できる情報源（SSOT）**
+- **n8n Cloud UIは動作確認・モニタリング用途**
 
-1. **作成**: Cursor + n8n-mcp でワークフロー作成
-   - Cursorでワークフローを作成・編集
-   - `workflows/*.json` として保存
+## 標準フロー（GitHub→Cloud）
 
-2. **検証**: GitHub Actions（自動）
-   - `npm run format` # ローカル整形
-   - `npm run format:check` # CI検証
+1. Cursorでワークフロー編集
+2. ローカル検証（`npm run format:check`）
+3. GitHubへpush
+4. GitHub Actions自動検証
+5. n8n-mcp経由でCloud反映
+6. Cloud UIで動作確認
 
-3. **同期**: n8n Cloud UI で手動Import
-   - Workflows → Import from File
-   - `workflows/*.json` を選択
+## 例外フロー（Cloud→GitHub取り込み）
+
+緊急時にCloud UIで編集した場合の手順:
+
+1. Cloud UIで編集実施
+2. 直後にExport（JSONダウンロード）
+3. `workflows/`へ保存（命名規約準拠）
+4. `npm run format`（自動整形）
+5. GitHubへpush（取り込み）
+6. 以降GitHubを正とする
+
+## 重要な注意事項
+
+- **同じワークフローをCloudとGitHub両方で同時編集禁止**
+- **UI編集後は必ず取り込みコミット作成**
+- **Credentials/Secretsは環境依存（JSON非含有）**
+
+## なぜGitHub Actionsが必要か
+
+- CloudからのExport JSONはフォーマット揺れあり
+- 壊れたJSONがSSOTに混入するのを防止
+- Prettierで差分を読みやすく保持
 
 ## Import時の注意事項
 
@@ -33,11 +55,6 @@
 - **有効化状態**: Importされたワークフローはデフォルトで無効（Inactive）状態です。必要に応じてActivateしてください
 - **資格情報（Credentials）**: JSONに含まれません。Import後、手動で設定が必要です
 - **Webhook URL**: n8n Cloud固有のURLが自動生成されます
-
-### Phase 2: 自動同期（計画中）
-
-- `main` マージ時、GitHub Actionsで自動デプロイ
-- n8n Cloud API経由でワークフロー更新
 
 ## セットアップ
 

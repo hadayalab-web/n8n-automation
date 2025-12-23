@@ -38,3 +38,9 @@
 - 必須: `name`, `nodes`, `connections`
 - 推奨: `tags`, `settings`, `pinData`
 
+## Cloud UIからの取り込み時
+
+- Export後は必ず `npm run format` 実行
+- 命名規約を厳守（接頭辞 + 説明 + .json）
+- 取り込みコミットメッセージに `"Import from Cloud:"` プレフィックス
+
