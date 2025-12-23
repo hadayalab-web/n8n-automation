@@ -21,6 +21,7 @@ n8n Cloud ワークフロー自動化プロジェクト（SSOT）
 
 ## 📚 ドキュメント
 
+- **[n8n-automation SSOT](./docs/n8n-automation-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
 - [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)
 - [ワークフロー命名規約](./docs/workflow-conventions.md)
 - [ドキュメント一覧](./docs/README.md)
