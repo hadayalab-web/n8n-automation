@@ -5,5 +5,5 @@
 - n8n Cloud UI で手動同期
 
 現在のワークフロー:
-- hello-world-test.json: MCPテスト用
+- manual-hello-world-test.json: MCPテスト用
 
