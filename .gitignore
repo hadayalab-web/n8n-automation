@@ -44,6 +44,8 @@ Desktop.ini
 *.tmp
 *.temp
 .cache/
+*.template
+restore-*.ps1
 
 # ビルド成果物
 dist/

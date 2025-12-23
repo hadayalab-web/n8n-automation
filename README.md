@@ -9,6 +9,7 @@ HadayaLab Automation Platform - MCP統合型ワークフロー自動化プラッ
 
 - **実行環境**: n8n Cloud
 - **開発**: Cursor + n8n-mcp
+- **レビュー**: GitHub Copilot Pro
 - **検証**: GitHub Actions（自動）
 - **同期**: 手動Import（Phase 1） / 自動デプロイ（Phase 2計画中）
 
@@ -22,6 +23,8 @@ HadayaLab Automation Platform - MCP統合型ワークフロー自動化プラッ
 ## 📚 ドキュメント
 
 - **[hadayalab-automation-platform SSOT](./docs/hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
+- [GitHub Copilot Proセットアップ](./docs/github-copilot-setup.md) - GitHub Copilot連携のセットアップ（**GitHub Copilot連携開始時に参照**）
+- [Cursor + GitHub Copilot連携](./docs/cursor-copilot-integration.md) - 連携ワークフロー
 - [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)
 - [ワークフロー命名規約](./docs/workflow-conventions.md)
 - [ドキュメント一覧](./docs/README.md)
