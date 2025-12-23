@@ -1,11 +1,11 @@
 {
   "name": "n8n-automation",
   "version": "1.0.0",
-  "description": "n8nワークフロー自動化プロジェクト - HadayaLab Space連携",
+  "description": "n8n Cloud workflow automation SSOT - HadayaLab Space",
   "main": "index.js",
   "scripts": {
-    "start": "n8n start",
-    "dev": "n8n start --tunnel"
+    "format": "prettier --write 'workflows/**/*.json'",
+    "format:check": "prettier --check 'workflows/**/*.json'"
   },
   "keywords": [
     "n8n",
@@ -15,11 +15,9 @@
   ],
   "author": "HadayaLab",
   "license": "MIT",
-  "dependencies": {
-    "n8n": "^1.0.0",
-    "n8n-mcp": "^1.0.0"
+  "devDependencies": {
+    "prettier": "^3.1.1"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
