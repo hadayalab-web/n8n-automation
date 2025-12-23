@@ -71,18 +71,18 @@ GitHub.com上でPRを開き、コメント欄に以下を入力：
 3. **コメント欄に以下を入力**
    ```markdown
    @copilot このIssueのレビュー依頼内容を確認して、以下のファイルをレビューしてください:
-   
+
    1. n8n-workflows-design.md
    2. workflow-1-trial-onboarding.json
    3. README-n8n-implementation.md
-   
+
    特に以下の点を重点的にレビューしてください:
    - Wait Nodeの長時間待機（6時間、12時間）の実装方法
    - Switch Nodeの6市場分岐の効率性
    - 式（expressions）の記述が正しいか
    - エラーハンドリングが適切か
    - セキュリティ設定が適切か
-   
+
    改善提案もお願いします。
    ```
 
@@ -204,7 +204,7 @@ gh issue view <ISSUE_NUMBER> --comments | tail -20
 ### レビュー依頼コメント
 - **追加日**: 2025-12-23
 - **内容**: `@copilot` メンション付きレビュー依頼
-- **対象ファイル**: 
+- **対象ファイル**:
   - n8n-workflows-design.md
   - workflow-1-trial-onboarding.json
   - README-n8n-implementation.md

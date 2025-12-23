@@ -24,6 +24,7 @@ HadayaLab Automation Platform - MCP統合型ワークフロー自動化プラッ
 
 - **[hadayalab-automation-platform SSOT](./docs/hadayalab-automation-platform-SSOT.md)** - プロジェクト全体の唯一の信頼できる情報源（**最初に参照**）
 - [GitHub Copilot Proセットアップ](./docs/github-copilot-setup.md) - GitHub Copilot連携のセットアップ（**GitHub Copilot連携開始時に参照**）
+- [GitHub Copilot タスク一覧](./docs/github-copilot-tasks.md) - GitHub Copilotに任せられる具体的なタスク（**GitHub Copilot活用時に参照**）
 - [Cursor + GitHub Copilot連携](./docs/cursor-copilot-integration.md) - 連携ワークフロー
 - [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)
 - [ワークフロー命名規約](./docs/workflow-conventions.md)

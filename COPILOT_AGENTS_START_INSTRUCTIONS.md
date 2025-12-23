@@ -20,18 +20,18 @@ GitHub Copilot Agentsは、**GitHub.com上で手動で起動する必要があ�
 3. **以下のコマンドをコピー＆ペースト**
    ```
    @copilot Issue #1のレビュー依頼内容を確認して、以下のファイルをレビューしてください:
-   
+
    1. n8n-workflows-design.md
    2. workflow-1-trial-onboarding.json
    3. README-n8n-implementation.md
-   
+
    特に以下の点を重点的にレビューしてください:
    - Wait Nodeの長時間待機（6時間、12時間）の実装方法
    - Switch Nodeの6市場分岐の効率性
    - 式（expressions）の記述が正しいか
    - エラーハンドリングが適切か
    - セキュリティ設定が適切か
-   
+
    改善提案と具体的な修正方法を教えてください。
    ```
 
@@ -46,14 +46,14 @@ GitHub Copilot Agentsは、**GitHub.com上で手動で起動する必要があ�
 2. **以下のコメントを入力**
    ```markdown
    @copilot このIssueのレビュー依頼内容を確認して、n8n-workflows-design.md、workflow-1-trial-onboarding.json、README-n8n-implementation.mdをレビューしてください。
-   
+
    特に以下の点を重点的にレビューしてください:
    1. Wait Nodeの長時間待機（6時間、12時間）の実装方法
    2. Switch Nodeの6市場分岐の効率性
    3. 式（expressions）の記述が正しいか
    4. エラーハンドリングが適切か
    5. セキュリティ設定が適切か
-   
+
    改善提案と具体的な修正方法を教えてください。
    ```
 

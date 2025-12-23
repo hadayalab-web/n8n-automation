@@ -4,7 +4,7 @@
 
 /**
  * GitHub Copilot Agentレビュー依頼テンプレート生成スクリプト
- * 
+ *
  * 使用方法:
  *   node scripts/prepare-copilot-review.js
  *   node scripts/prepare-copilot-review.js --issue 1
@@ -45,7 +45,7 @@ function generateReviewTemplate(config) {
   const { files, focusAreas, questions, issueNumber } = config;
 
   let template = '@copilot ';
-  
+
   if (issueNumber) {
     template += `Issue #${issueNumber}のレビュー依頼内容を確認して、以下のファイルをレビューしてください:\n\n`;
   } else {
@@ -83,7 +83,7 @@ function generateReviewTemplate(config) {
  */
 function main() {
   const args = process.argv.slice(2);
-  
+
   // コマンドライン引数の解析
   let issueNumber = null;
   let customFiles = null;
@@ -116,14 +116,14 @@ function main() {
   console.log('📌 Next Steps:');
   console.log('='.repeat(60));
   console.log('1. 上記のテンプレートをコピーしてください');
-  
+
   if (issueNumber) {
     console.log(`2. Issue #${issueNumber}を開いてください`);
     console.log(`   https://github.com/hadayalab-web/hadayalab-automation-platform/issues/${issueNumber}`);
   } else {
     console.log('2. レビューを依頼するIssueまたはPRを開いてください');
   }
-  
+
   console.log('3. GitHub Copilot Chatを開いてください');
   console.log('   - サイドバーのCopilotアイコンをクリック');
   console.log('   - または、コメント欄で @copilot と入力');
