@@ -1,40 +1,53 @@
 # n8n-automation
 
-n8nワークフロー自動化プロジェクト。HadayaLab Spaceと連携し、効率的な自動化を実現します。
+n8n Cloud ワークフロー自動化プロジェクト（SSOT）
 
-## プロジェクト概要
+## 🎯 概要
 
-このリポジトリは、n8nを使用したワークフロー自動化プロジェクトです。HadayaLab Spaceとの連携により、様々なタスクの自動化を実現します。
+[hadayalab.app.n8n.cloud](https://hadayalab.app.n8n.cloud) の
+ワークフローをGitHubで一元管理します。
 
-## ディレクトリ構成
+- **実行環境**: n8n Cloud
+- **開発**: Cursor + n8n-mcp
+- **検証**: GitHub Actions（自動）
+- **同期**: 手動Import（Phase 1） / 自動デプロイ（Phase 2計画中）
 
-```
-n8n-automation/
-├── README.md                  # プロジェクト説明
-├── .gitignore                 # Node.js/n8n除外設定
-├── package.json               # n8n-mcp依存関係
-├── workflows/                 # n8nワークフローJSON
-│   └── .gitkeep
-├── docs/                      # ドキュメント
-│   └── .gitkeep
-└── .cursor/                   # Cursor設定（ローカルのみ）
-    └── mcp.json              # n8n-mcp設定
-```
+## 📚 ドキュメント
 
-## セットアップ
+- [n8n Cloud同期運用](./docs/n8n-cloud-sync.md)
+- [ワークフロー命名規約](./docs/workflow-conventions.md)
+- [ドキュメント一覧](./docs/README.md)
 
+## 🚀 クイックスタート
+
+### 依存関係インストール
 ```bash
 npm install
 ```
 
-## 使用方法
+### JSON整形
+```bash
+npm run format
+```
 
-n8nワークフローは `workflows/` ディレクトリに保存されます。
+### JSON検証
+```bash
+npm run format:check
+```
 
-## リポジトリ情報
+## 📁 ディレクトリ構成
 
-- リモート: https://github.com/hadayalab-web/n8n-automation.git
-- 目的: n8nワークフロー自動化プロジェクト
-- HadayaLab Space連携
+```
+n8n-automation/
+├── workflows/ # n8nワークフローJSON（SSOT）
+├── docs/ # 運用ドキュメント
+└── .github/workflows/ # CI/CD
+```
+
+## 🔗 リンク
+
+- [n8n Cloud](https://hadayalab.app.n8n.cloud)
+- [n8n-mcp](https://www.npmjs.com/package/n8n-mcp)
+- [HadayaLab](https://github.com/hadayalab-web)
 
 

@@ -1,0 +1,35 @@
+name: Validate n8n Workflows
+
+on:
+  push:
+    paths:
+      - 'workflows/**/*.json'
+  pull_request:
+    paths:
+      - 'workflows/**/*.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check JSON format
+        run: npm run format:check
+      
+      - name: Validate JSON syntax
+        run: |
+          sudo apt-get install -y jq
+          for file in workflows/*.json; do
+            echo "Validating $file"
+            jq empty "$file"
+          done
+
