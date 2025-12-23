@@ -1,0 +1,27 @@
+@copilot このIssueのレビュー依頼内容を確認して、以下のファイルをレビューしてください:
+
+**レビュー対象ファイル:**
+1. n8n-workflows-design.md - n8nワークフロー設計の妥当性を確認
+2. workflow-1-trial-onboarding.json - JSON形式の正確性とn8nインポート可能性を確認
+3. README-n8n-implementation.md - 実装ガイドの完全性を確認
+
+**重点レビュー項目:**
+1. **Wait Nodeの長時間待機**: 6時間、12時間の待機実装方法が適切か（n8n Cloudでの実行時間制限を考慮）
+2. **Switch Nodeの分岐**: 6市場分岐（EN/AR/KO/JA/ES/PT-BR）の実装が効率的か
+3. **式（expressions）の記述**: `={{ $json.body.user_email || $json.body.data?.user_email }}` のようなフォールバック処理が適切か
+4. **エラーハンドリング**: Try-Catch NodeまたはError Triggerの追加が必要か
+5. **セキュリティ設定**: API Key管理、Webhook認証、データ暗号化の必要性
+
+**既知の問題:**
+- Wait Nodeの長時間待機はn8nインスタンスが継続実行中である必要がある
+- エラーハンドリングノードが未実装
+- API Keyがプレースホルダー使用中
+
+**改善提案のリクエスト:**
+- パフォーマンス最適化方法
+- セキュリティ強化方法
+- エラーハンドリングの実装方法
+- テスト戦略
+
+レビュー結果はこのIssueにコメントしてください。改善提案も具体的な実装方法を含めてお願いします。
+
