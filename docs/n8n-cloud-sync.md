@@ -27,6 +27,13 @@
    - Workflows → Import from File
    - `workflows/*.json` を選択
 
+## Import時の注意事項
+
+- **上書き vs 新規**: n8n Cloud UIでImportする際、既存ワークフローを上書きするか、新規作成するかを選択できます
+- **有効化状態**: Importされたワークフローはデフォルトで無効（Inactive）状態です。必要に応じてActivateしてください
+- **資格情報（Credentials）**: JSONに含まれません。Import後、手動で設定が必要です
+- **Webhook URL**: n8n Cloud固有のURLが自動生成されます
+
 ### Phase 2: 自動同期（計画中）
 
 - `main` マージ時、GitHub Actionsで自動デプロイ
