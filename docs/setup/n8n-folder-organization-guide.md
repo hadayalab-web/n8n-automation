@@ -5,15 +5,23 @@
 
 ---
 
-## 📁 推奨フォルダ構成
+## 📁 フォルダ（プロジェクト）構成（設定済み）
 
-### Personal
+### Personal - 私の使用用途
+
+- **URL**: https://hadayalab.app.n8n.cloud/projects/fPT5foO8DCTDBr0k/workflows
+- **プロジェクトID**: `fPT5foO8DCTDBr0k`
 - **用途**: 私の使用用途（個人的なワークフロー）
 - **説明**: 個人的な自動化や実験的なワークフローを保存
 
-### hadayalab-automation-platform
+### hadayalab-automation-platform - プロジェクト用途
+
+- **URL**: https://hadayalab.app.n8n.cloud/projects/9D29Es58GIo6IPkZ/workflows
+- **プロジェクトID**: `9D29Es58GIo6IPkZ`
 - **用途**: プロジェクト用途（hadayalab-automation-platformプロジェクト関連）
 - **説明**: hadayalab-automation-platformプロジェクトで使用するワークフローを保存
+
+**状態**: ✅ 設定完了（2025-12-26）
 
 ---
 

@@ -1,7 +1,8 @@
 # n8n Cloud フォルダ整理サマリー
 
 **作成日**: 2025-12-26
-**現状**: 全ワークフローがフォルダなし（整理が必要）
+**最終更新**: 2025-12-26
+**状態**: ✅ フォルダ（プロジェクト）設定完了
 
 ---
 
@@ -31,16 +32,29 @@
 
 ---
 
-## 🎯 整理手順
+## 📁 設定済みフォルダ（プロジェクト）情報
 
-### ステップ1: フォルダを作成
+### Personal - 私の使用用途
 
-1. n8n Dashboard (https://hadayalab.app.n8n.cloud) にログイン
-2. 左側のサイドバーで「**Workflows**」をクリック
-3. 「**+ New**」→「**Folder**」をクリック
-4. 以下のフォルダを作成:
-   - `Personal`
-   - `hadayalab-automation-platform`
+- **URL**: https://hadayalab.app.n8n.cloud/projects/fPT5foO8DCTDBr0k/workflows
+- **プロジェクトID**: `fPT5foO8DCTDBr0k`
+
+### hadayalab-automation-platform - プロジェクト用途
+
+- **URL**: https://hadayalab.app.n8n.cloud/projects/9D29Es58GIo6IPkZ/workflows
+- **プロジェクトID**: `9D29Es58GIo6IPkZ`
+
+**状態**: ✅ 設定完了（2025-12-26）
+
+---
+
+## 🎯 整理手順（参考）
+
+### ステップ1: フォルダを作成（✅ 完了）
+
+以下のフォルダ（プロジェクト）は既に作成済み:
+- `Personal` (ID: `fPT5foO8DCTDBr0k`)
+- `hadayalab-automation-platform` (ID: `9D29Es58GIo6IPkZ`)
 
 ### ステップ2: ワークフローを移動
 
