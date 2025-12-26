@@ -272,75 +272,6 @@
               },
               "renameOutput": true,
               "outputKey": "calendar_delete"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-12",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "docs_create",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "docs_create"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-13",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "docs_update",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "docs_update"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict"
-                },
-                "conditions": [
-                  {
-                    "id": "condition-14",
-                    "leftValue": "={{ $json.body.action }}",
-                    "rightValue": "docs_read",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "docs_read"
             }
           ]
         },
@@ -649,66 +580,6 @@
     },
     {
       "parameters": {
-        "operation": "create",
-        "title": "={{ $json.body.title }}",
-        "options": {}
-      },
-      "id": "docs-create-1",
-      "name": "Docs Create",
-      "type": "n8n-nodes-base.googleDocs",
-      "typeVersion": 1.1,
-      "position": [650, 1200],
-      "credentials": {
-        "googleDocsOAuth2Api": {
-          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "documentId": {
-          "__rl": true,
-          "value": "={{ $json.body.documentId }}",
-          "mode": "id"
-        },
-        "content": "={{ $json.body.content }}",
-        "options": {}
-      },
-      "id": "docs-update-1",
-      "name": "Docs Update",
-      "type": "n8n-nodes-base.googleDocs",
-      "typeVersion": 1.1,
-      "position": [650, 1300],
-      "credentials": {
-        "googleDocsOAuth2Api": {
-          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "documentId": {
-          "__rl": true,
-          "value": "={{ $json.body.documentId }}",
-          "mode": "id"
-        },
-        "options": {}
-      },
-      "id": "docs-read-1",
-      "name": "Docs Read",
-      "type": "n8n-nodes-base.googleDocs",
-      "typeVersion": 1.1,
-      "position": [650, 1400],
-      "credentials": {
-        "googleDocsOAuth2Api": {
-          "name": "Google Docs OAuth2 account for admin@cryptotradeacademy.io"
-        }
-      }
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -810,87 +681,338 @@
   ],
   "connections": {
     "Webhook Trigger": {
-      "main": [[{ "node": "Switch Action", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Switch Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Switch Action": {
       "main": [
-        [{ "node": "Gmail Send", "type": "main", "index": 0 }],
-        [{ "node": "Sheets Read", "type": "main", "index": 0 }],
-        [{ "node": "Sheets Write", "type": "main", "index": 0 }],
-        [{ "node": "Sheets Update", "type": "main", "index": 0 }],
-        [{ "node": "Drive List", "type": "main", "index": 0 }],
-        [{ "node": "Drive Upload", "type": "main", "index": 0 }],
-        [{ "node": "Drive Download", "type": "main", "index": 0 }],
-        [{ "node": "Calendar List", "type": "main", "index": 0 }],
-        [{ "node": "Calendar Create", "type": "main", "index": 0 }],
-        [{ "node": "Calendar Update", "type": "main", "index": 0 }],
-        [{ "node": "Calendar Delete", "type": "main", "index": 0 }],
-        [{ "node": "Docs Create", "type": "main", "index": 0 }],
-        [{ "node": "Docs Update", "type": "main", "index": 0 }],
-        [{ "node": "Docs Read", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Gmail Send",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sheets Read",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sheets Write",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sheets Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Drive List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Drive Upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Drive Download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar Create",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar Delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Gmail Send": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Sheets Read": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Sheets Write": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Sheets Update": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Drive List": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Drive Upload": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Drive Download": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Calendar List": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Calendar Create": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Calendar Update": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Calendar Delete": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
-    },
-    "Docs Create": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
-    },
-    "Docs Update": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
-    },
-    "Docs Read": {
-      "main": [[{ "node": "Format Success Response", "type": "main", "index": 0 }]],
-      "error": [[{ "node": "Format Error Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Format Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Format Success Response": {
-      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Format Error Response": {
-      "main": [[{ "node": "Respond to Webhook (Error)", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},

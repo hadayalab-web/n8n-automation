@@ -1,0 +1,480 @@
+# n8n完全統合SSOT（Single Source of Truth）
+
+**最終更新**: 2025-12-26
+**バージョン**: 1.0.0
+**メンテナー**: HadayaLab
+
+---
+
+## ⚠️ 重要な注意事項
+
+**このドキュメントは、n8nに関するすべての情報の唯一の信頼できる情報源（SSOT）です。**
+
+n8nに関する作業を行う前に、必ずこのドキュメントを参照してください。
+
+---
+
+## 📋 目次
+
+1. [概要・設計方針](#1-概要設計方針)
+2. [役割分担](#2-役割分担)
+3. [MCP設定](#3-mcp設定)
+4. [ワークフロー管理運用](#4-ワークフロー管理運用)
+5. [ワークフロー開発ガイド](#5-ワークフロー開発ガイド)
+6. [MCP機能比較](#6-mcp機能比較)
+7. [認証情報](#7-認証情報)
+8. [環境変数・シークレット管理](#8-環境変数シークレット管理)
+9. [トラブルシューティング](#9-トラブルシューティング)
+
+---
+
+## 1. 概要・設計方針
+
+### プロジェクト情報
+
+- **実行環境**: n8n Cloud (https://hadayalab.app.n8n.cloud)
+- **バージョン管理**: GitHub
+- **リポジトリ**: https://github.com/hadayalab-web/hadayalab-automation-platform
+- **ワークフローディレクトリ**: `workflows/`
+
+### 🎯 設計方針：すべてのn8nワークフローをCursor UIから直接制御
+
+**重要な仕様**: **n8nのワークフローはすべてCursorのUIから直接制御できる仕様にする**
+
+**推奨フロー**: `User → AI (Cursor) → n8nワークフロー`（直接制御）
+
+この設計方針により、以下のメリットが実現されます：
+
+- ✅ **統一された開発環境**: n8n Dashboardへの切り替え不要
+- ✅ **コンテキストの維持**: Cursor内で完結するワークフロー管理
+- ✅ **効率的な開発**: Cursor Chatから直接n8nワークフローを操作
+- ✅ **自動化の推進**: AIエージェントによるワークフロー自動生成・管理
+- ✅ **シンプルで高速**: 中間層を経由しないため、即座に実行可能
+- ✅ **エラーが少ない**: 直接制御により、中間層によるエラーを回避
+
+### SSOT原則
+
+- **GitHubが唯一の信頼できる情報源（Single Source of Truth）**
+- すべての変更はGitHubを起点とする
+- n8n Cloud UIは動作確認・モニタリング用途のみ
+- ワークフローの真実の状態は常にGitHubリポジトリに存在
+
+### 禁止事項
+
+- ❌ **n8n Dashboardでの直接編集は原則禁止**（緊急時のみ例外）
+- ❌ **n8n Dashboardでのワークフロー作成は原則禁止**（緊急時のみ例外）
+- ⚠️ **緊急時は例外フロー（Cloud→GitHub取り込み）を実施**
+
+---
+
+## 2. 役割分担
+
+### 人間の役割: なし（すべてCursorの役割）
+
+### Cursorの役割: すべて（GitHubへのコミット・プッシュ、n8nへのインポートを含む）
+
+- ✅ ワークフローの作成・編集・削除
+- ✅ **n8n Cloudへのインポート（n8n-MCPパッケージを使用）**
+- ✅ コード生成・リファクタリング
+- ✅ バグ修正
+- ✅ テスト実行
+- ✅ **GitHubへのコミット・プッシュ（CursorはGitHubにシームレスにつながっているため自動実行）**
+
+**原則**: CursorはGitHubにシームレスにつながっているため、ワークフローの作成・編集後は自動的にGitHubにコミット・プッシュし、n8n-MCPパッケージを使用してn8n Cloudにインポートする
+
+---
+
+## 3. MCP設定
+
+### 設定ファイル
+
+**パス**: `C:\Users\chiba\.cursor\mcp.json`
+
+### 設定内容（最新版を使用）
+
+```json
+{
+  "mcpServers": {
+    "n8n-local": {
+      "command": "npx",
+      "args": ["-y", "n8n-mcp@latest"],
+      "env": {
+        "N8N_API_URL": "https://hadayalab.app.n8n.cloud",
+        "N8N_API_KEY": "<YOUR_N8N_API_KEY>",
+        "LOG_LEVEL": "error",
+        "NODE_NO_WARNINGS": "1"
+      }
+    },
+    "n8n-cloud": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://hadayalab.app.n8n.cloud/mcp-server/http",
+        "--header",
+        "authorization:Bearer <YOUR_ACCESS_TOKEN_HERE>"
+      ]
+    }
+  }
+}
+```
+
+**重要な設定**:
+- ✅ `@latest` を使用して常に最新版のn8n-mcpパッケージを使用
+- ✅ `n8n-local`: ワークフロー開発・ノード検索・テンプレート検索用
+- ✅ `n8n-cloud`: ワークフロー実行・環境変数管理用（ネイティブMCP）
+
+### MCPサーバーの使い分け
+
+#### n8n-local（ローカル開発用・n8n-mcpパッケージ）
+
+**用途**:
+- ✅ ワークフローの作成・編集・削除
+- ✅ ノード検索（543個）
+- ✅ テンプレート検索（2,700+）
+- ✅ ワークフロー検証
+
+**使用方法**:
+```
+@n8n-local ワークフロー一覧を表示して
+@n8n-local Gmailノードを検索して
+@n8n-local テンプレートを検索して、keyword=email
+@n8n-local workflow.jsonを検証して
+```
+
+#### n8n-cloud（n8n Cloud実装用・ネイティブMCP）
+
+**重要**: **n8nを有料プランにすると、ネイティブのn8n-MCPでほとんどのオペレーションができるようになります**
+
+**用途**（有料プラン）:
+- ✅ ワークフローの作成・更新・削除（有料プラン）
+- ✅ ワークフローの実行
+- ✅ 環境変数の管理
+- ✅ 実行履歴の詳細確認
+- ✅ Webhook Triggerのワークフローも直接実行可能
+- ✅ その他ほとんどのn8n操作
+
+**使用方法**:
+```
+@n8n-cloud whop-controlワークフローを実行して、action=get_members
+@n8n-cloud 環境変数一覧を表示して
+@n8n-cloud 実行履歴を確認して
+@n8n-cloud ワークフローを作成して（有料プラン）
+@n8n-cloud ワークフローを更新して（有料プラン）
+```
+
+**有料プランでの推奨**: n8nを有料プランにする場合、ネイティブMCPでほとんどのオペレーションが可能になるため、n8n-mcpパッケージ（n8n-local）は主にノード検索・テンプレート検索用途として使用することを推奨します。
+
+### セットアップ手順
+
+#### 1. 認証情報の準備
+
+##### n8n-local用（Personal Access Token）
+
+1. n8n Cloud Dashboard → Settings → API → Personal Access Tokens
+2. 「Create Token」をクリック
+3. Tokenをコピー
+
+**注意**: Personal Access Token取得には有料プラン（Starter以上、24€/mo）が必要
+
+##### n8n-cloud用（MCP Access Token）
+
+1. n8n Cloud Dashboard → Settings → MCP Access → Access Tokenタブ
+2. Tokenをコピー
+
+#### 2. mcp.jsonの更新
+
+1. `C:\Users\chiba\.cursor\mcp.json` を開く
+2. 上記の設定例を参考に、認証情報を埋める
+3. JSON構文を検証
+
+#### 3. Cursor再起動
+
+1. すべてのCursorウィンドウを閉じる
+2. 30秒待機（MCPサーバーの接続を確実に切断）
+3. Cursorを再起動
+
+#### 4. 動作確認
+
+```bash
+# ローカル開発用
+@n8n-local 利用可能なツールを表示して
+
+# n8n Cloud実装用
+@n8n-cloud 利用可能なツールを表示して
+```
+
+---
+
+## 4. ワークフロー管理運用
+
+### 標準フロー（GitHub → n8n Cloud）
+
+#### ステップ1-4: Cursorの役割（自動実行）
+
+**原則**: CursorはGitHubにシームレスにつながっているため、以下の作業を自動的に実行します。
+
+1. **Cursorでワークフロー編集**
+2. **ローカル検証**
+   - `npm run format`（自動整形）
+   - `npm run format:check`（確認）
+3. **GitHubへコミット・プッシュ（自動実行）**
+   - Cursorが自動的にコミット・プッシュを実行
+   - 人間の操作は不要
+4. **GitHub Actions自動検証**
+   - push後、GitHub Actionsが自動実行されgreenになることを確認してから次のステップへ（推奨）
+
+#### ステップ5-6: Cursorの役割（自動実行）
+
+5. **n8n-MCPパッケージでn8n Cloudにインポート**（自動・Cursorの役割）
+   - n8n-MCPパッケージを使用してワークフローをインポート
+   - コマンド例: `@n8n-local workflows/webhook-google-workspace-control.jsonをインポートして`
+
+6. **Cloud UIで動作確認**（手動・人間の役割）
+   - ワークフローが正常にインポートされたことを確認（必要に応じて）
+   - 各ノードの認証情報を設定（必要に応じて）
+   - ワークフローを有効化して動作確認（必要に応じて）
+
+**重要**: ファイルがGitHubにプッシュされていない場合、URLからのインポートは404エラーになります。必ずコミット・プッシュを完了してからインポートしてください。
+
+### 例外フロー（Cloud → GitHub取り込み）
+
+緊急時にCloud UIで編集した場合の手順：
+
+1. **Cloud UIで編集実施**（手動・人間の役割）
+2. **直後にExport（JSONダウンロード）**（手動・人間の役割）
+3. **`workflows/`へ保存（命名規約準拠）**（Cursorの役割・自動実行）
+4. **`npm run format`（自動整形）**（Cursorの役割・自動実行）
+5. **GitHubへpush（取り込み・自動実行）**（Cursorの役割・自動実行、CursorはGitHubにシームレスにつながっているため）
+6. **以降GitHubを正とする**
+
+**注意**: 例外フローを常態化させない（緊急時のみ許可）
+
+---
+
+## 5. ワークフロー開発ガイド
+
+### n8n-MCPパッケージの活用（車輪の再発明禁止）
+
+#### 原則
+
+- ✅ **n8n-MCPパッケージのテンプレート（2,700+）を参照**
+- ✅ **n8n-MCPパッケージのノード（543個）を参照**
+- ✅ **既存の実装を活用**
+
+#### ノード検索（543個）
+
+```
+@n8n-local Gmailノードを検索して
+@n8n-local HTTP Requestノードを検索して
+```
+
+#### テンプレート検索（2,700+）
+
+```
+@n8n-local テンプレートを検索して、keyword=email automation
+@n8n-local テンプレートを検索して、keyword=webhook trigger
+```
+
+### ファイル名規則
+
+`<category>-<purpose>[-version].json`
+
+#### カテゴリ
+
+- `webhook`: Webhook トリガー
+- `schedule`: スケジュール実行
+- `manual`: 手動実行
+- `email`: メールトリガー
+
+#### 例
+
+- `webhook-slack-notification.json`
+- `schedule-daily-report-v2.json`
+- `manual-hello-world-test.json`
+- `email-support-automation.json`
+
+### タグ運用（ワークフローJSON内）
+
+```json
+{
+  "tags": ["production", "mcp", "slack"]
+}
+```
+
+#### 推奨タグ
+
+- `test`: テスト用
+- `production`: 本番稼働
+- `mcp`: MCP経由で作成
+- `draft`: ドラフト
+
+### ワークフロー構造
+
+- **必須**: `name`, `nodes`, `connections`
+- **推奨**: `tags`, `settings`, `pinData`
+
+---
+
+## 6. MCP機能比較
+
+### クイックリファレンス
+
+| 機能 | n8nネイティブMCP | n8n-mcpパッケージ | 備考 |
+|------|-----------------|------------------|------|
+| **ワークフロー検索** | ✅ | ✅ | 両方で利用可能 |
+| **ワークフロー詳細取得** | ✅ | ✅ | 両方で利用可能 |
+| **ワークフロー実行** | ✅ | ❌ | ネイティブMCPのみ |
+| **ワークフロー作成** | ✅ 有料プラン | ✅ | 有料プランではネイティブMCPでも可能 |
+| **ワークフロー更新** | ✅ 有料プラン | ✅ | 有料プランではネイティブMCPでも可能 |
+| **ワークフロー削除** | ✅ 有料プラン | ✅ | 有料プランではネイティブMCPでも可能 |
+| **ノード検索** | ❌ | ✅ | n8n-mcpパッケージのみ（543個） |
+| **テンプレート検索** | ❌ | ✅ | n8n-mcpパッケージのみ（2,700+） |
+| **ワークフロー検証** | ❌ | ✅ | n8n-mcpパッケージのみ |
+| **実行履歴確認** | ✅ 詳細 | ⚠️ 基本のみ | ネイティブMCPが詳細 |
+| **環境変数管理** | ✅ | ❌ | ネイティブMCPのみ |
+| **Webhook実行** | ✅ | ❌ | ネイティブMCPのみ |
+
+### 使い分けガイド
+
+#### n8nネイティブMCPを使用する場合
+
+**有料プラン**: n8nを有料プランにすると、ネイティブMCPでほとんどのオペレーションが可能になります。
+
+- ✅ **ワークフローの作成・更新・削除**（有料プラン）
+- ✅ **ワークフローの実行**
+- ✅ **実行履歴の確認**
+- ✅ **環境変数の管理**
+- ✅ **ワークフローの検索・詳細取得**
+- ✅ **その他ほとんどのn8n操作**（有料プラン）
+
+#### n8n-mcpパッケージを使用する場合
+
+- ✅ **ノード検索**（543個）
+- ✅ **テンプレート検索**（2,700+）
+- ✅ **ワークフロー検証**
+
+**無料プランでの代替用途**（有料プランがない場合）:
+- ✅ ワークフローの作成・編集・削除
+- ✅ 実行履歴の基本確認
+
+---
+
+## 7. 認証情報
+
+### n8nネイティブMCP認証情報
+
+- **N8N_SERVER_URL**: `https://hadayalab.app.n8n.cloud/mcp-server/http`
+- **N8N_ACCESS_TOKEN**: MCP Access Token（Settings → MCP Access → Access Tokenタブ）
+
+### n8n-mcpパッケージ認証情報（Infisicalから取得）
+
+- **N8N_API_URL**: `https://hadayalab.app.n8n.cloud`
+- **N8N_API_KEY**: Infisicalから取得（`N8N_PERSONAL_ACCESS_TOKEN`として保存）
+  - Infisicalプロジェクト: `hadayalab-automation-platform-c79-q`
+  - 取得方法: `infisical secrets get N8N_PERSONAL_ACCESS_TOKEN`
+
+**注意**: Personal Access Token取得には有料プラン（Starter以上、24€/mo）が必要
+
+---
+
+## 8. 環境変数・シークレット管理
+
+### .envファイルのキー管理（重要）
+
+**`.env`ファイルの位置**: `C:\Users\chiba\hadayalab-automation-platform\.env`
+
+**重要事項**:
+- ✅ **`.env`ファイルにAPIキーや認証情報が格納されている**
+- ✅ ローカル開発環境で使用するすべてのシークレットは`.env`ファイルで管理
+- ⚠️ `.env`ファイルは`.gitignore`に含まれており、Gitにコミットされない
+- ⚠️ `.env`ファイルは共有しない（機密情報のため）
+- ✅ 必要なキーが不足している場合は、Infisicalまたはn8n Cloud環境変数から取得
+
+**`.env`ファイルに含まれる可能性があるキー**:
+- `N8N_API_KEY` - n8n Cloud API認証キー
+- `WHOP_API_KEY` - Whop API認証キー
+- `TELEGRAM_BOT_TOKEN` - Telegram Bot認証トークン
+- `GOOGLE_OAUTH_2.0_CLIENT_ID` - Google OAuth2 Client ID
+- `GOOGLE_OAUTH_2.0_SECRET` - Google OAuth2 Client Secret
+- `GOOGLE_OAUTH_2.0_REFRESH_TOKEN` - Google OAuth2 Refresh Token
+- その他のAPIキーや認証情報
+
+**運用ルール**:
+1. `.env`ファイルはプロジェクトルートに配置
+2. 新しいAPIキーを取得した場合は`.env`ファイルに追加
+3. `.env`ファイルのバックアップは安全な場所に保管
+4. チームメンバーには`.env`ファイルの直接共有ではなく、Infisicalなどのシークレット管理ツールを使用
+
+### 本番環境（n8n Cloud）
+
+- ✅ **n8n Cloud環境変数**: n8n Cloud Dashboardで管理
+- ✅ **Infisical**: シークレット一元管理（推奨）
+
+---
+
+## 9. トラブルシューティング
+
+### MCPサーバーが動作しない場合
+
+1. **認証情報の確認**
+   - `mcp.json`の認証情報が正しいか確認
+   - n8n Cloud Dashboardでトークンが有効か確認
+
+2. **Cursor再起動**
+   - すべてのCursorウィンドウを閉じる
+   - 30秒待機
+   - Cursorを再起動
+
+3. **ログの確認**
+   - Cursor Settings → Tools & MCP → [MCP名] → "Show Output"
+   - エラーメッセージを確認
+
+### ワークフローがインポートできない場合
+
+1. **GitHubへのプッシュ確認**
+   - ファイルがGitHubにプッシュされているか確認
+   - GitHub Actionsがgreenになっているか確認
+
+2. **URL形式の確認**
+   - 正しいURL形式を使用しているか確認
+   - ファイル名が正しいか確認
+
+3. **JSON形式の確認**
+   - `npm run format:check`でJSON形式を確認
+   - ワークフローJSONの構文エラーがないか確認
+
+### ワークフローが実行できない場合
+
+1. **ワークフローの公開状態確認**
+   - ワークフローが公開済みか確認
+   - 「Available in MCP」が有効になっているか確認
+
+2. **認証情報の確認**
+   - 各ノードの認証情報が正しく設定されているか確認
+
+3. **実行履歴の確認**
+   - `@n8n-cloud 実行履歴を確認して`でエラーログを確認
+
+---
+
+## 📚 参考リンク
+
+### 公式ドキュメント
+
+- [n8n MCP Server Documentation](https://docs.n8n.io/advanced-ai/accessing-n8n-mcp-server/)
+- [n8n-mcp npm package](https://www.npmjs.com/package/n8n-mcp)
+- [n8n-mcp GitHub](https://github.com/n8n-io/n8n-mcp)
+
+### 関連SSOTドキュメント
+
+- [hadayalab-automation-platform SSOT](./hadayalab-automation-platform-SSOT.md) - プロジェクト全体SSOT
+- [n8n + Whop 完全活用戦略 SSOT](./n8n-whop-full-strategy-SSOT.md) - n8n + Whop統合戦略
+
+---
+
+**最終更新**: 2025-12-26
+**バージョン**: 1.0.0（n8n関連ナレッジ完全統合）
+**メンテナー**: HadayaLab
+
